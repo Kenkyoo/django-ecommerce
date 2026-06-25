@@ -241,8 +241,7 @@
       <div>
         <p class="section-eyebrow mb-0">Catálogo</p>
         <h2 class="section-title mb-0">
-          {% if products %}{{ products|length }} producto{{
-          products|length|pluralize:"s" }}{% else %}Productos{% endif %}
+          {% if products %}{{ products|length }} producto{{ products|length|pluralize:"s" }}{% else %}Productos{% endif %}
         </h2>
       </div>
     </div>
@@ -254,7 +253,7 @@
         <div class="product-card">
           <div class="product-img-wrap">
             {% if product.image %}
-            <img src="{{ product.image.url }}" alt="{{ product.name }}" />
+            <img src="{{ product.image }}" alt="{{ product.name }}" />
             {% else %}
             <img
               src="https://placehold.co/400x300/EEF2FF/3730A3?text={{ product.name|urlencode }}"
