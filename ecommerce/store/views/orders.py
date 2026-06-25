@@ -4,7 +4,6 @@ from store.models.customer import Customer
 from django.views import View
 from store.models.products import Products
 from store.models.orders import Order
-from store.middlewares.auth import auth_middleware
 
 class OrderView(View):
 
