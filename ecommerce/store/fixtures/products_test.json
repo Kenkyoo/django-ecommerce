@@ -1,0 +1,155 @@
+[
+  {
+    "model": "store.category",
+    "pk": 1,
+    "fields": {
+      "name": "Smartphones"
+    }
+  },
+  {
+    "model": "store.category",
+    "pk": 2,
+    "fields": {
+      "name": "Notebooks"
+    }
+  },
+  {
+    "model": "store.category",
+    "pk": 3,
+    "fields": {
+      "name": "Accesorios"
+    }
+  },
+  {
+    "model": "store.products",
+    "pk": 1,
+    "fields": {
+      "name": "Samsung Galaxy A10",
+      "price": 200,
+      "category": 1,
+      "description": "Teléfono de gama de entrada lanzado en 2019. Ideal para tareas básicas, redes sociales y mensajería con una excelente relación calidad-precio.",
+      "image": "https://images.unsplash.com/photo-1598327105666-5b89351aff97?w=500&q=80"
+    }
+  },
+  {
+    "model": "store.products",
+    "pk": 2,
+    "fields": {
+      "name": "iPhone 13 Pro",
+      "price": 999,
+      "category": 1,
+      "description": "Pantalla Super Retina XDR con ProMotion. Sistema de cámaras Pro de 12 MP y el potente chip A15 Bionic.",
+      "image": "https://images.unsplash.com/photo-1510557880182-3d4d3cba35a5?w=500&q=80"
+    }
+  },
+  {
+    "model": "store.products",
+    "pk": 3,
+    "fields": {
+      "name": "Xiaomi Redmi Note 12",
+      "price": 250,
+      "category": 1,
+      "description": "Pantalla AMOLED de 120Hz, procesador Snapdragon eficiente y batería de 5000 mAh con carga rápida.",
+      "image": "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=500&q=80"
+    }
+  },
+  {
+    "model": "store.products",
+    "pk": 4,
+    "fields": {
+      "name": "Motorola Edge 40",
+      "price": 450,
+      "category": 1,
+      "description": "Diseño ultradelgado con protección IP68 contra el agua. Cámara principal de 50 MP con gran apertura.",
+      "image": "https://images.unsplash.com/photo-1565630916779-e303be97b6f5?w=500&q=80"
+    }
+  },
+  {
+    "model": "store.products",
+    "pk": 5,
+    "fields": {
+      "name": "MacBook Air M2",
+      "price": 1199,
+      "category": 2,
+      "description": "Rediseñada en torno al chip M2 de última generación. Increíblemente delgada, carcasa de aluminio y hasta 18 horas de batería.",
+      "image": "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=500&q=80"
+    }
+  },
+  {
+    "model": "store.products",
+    "pk": 6,
+    "fields": {
+      "name": "Asus ROG Zephyrus G14",
+      "price": 1450,
+      "category": 2,
+      "description": "Notebook Gamer potente y portátil. Cuenta con procesador AMD Ryzen 9 y tarjeta gráfica NVIDIA RTX 4060.",
+      "image": "https://images.unsplash.com/photo-1603302576837-37561b2e2302?w=500&q=80"
+    }
+  },
+  {
+    "model": "store.products",
+    "pk": 7,
+    "fields": {
+      "name": "Dell XPS 13 OLED",
+      "price": 1300,
+      "category": 2,
+      "description": "La laptop definitiva para productividad. Pantalla InfinityEdge OLED con resolución 3.5K y procesador Intel Core i7.",
+      "image": "https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?w=500&q=80"
+    }
+  },
+  {
+    "model": "store.products",
+    "pk": 8,
+    "fields": {
+      "name": "Lenovo IdeaPad 3",
+      "price": 520,
+      "category": 2,
+      "description": "Perfecta para estudiantes y oficina. Rendimiento confiable con procesador Ryzen 5, 8GB de RAM y almacenamiento SSD.",
+      "image": "https://images.unsplash.com/photo-1593642632823-8f785ba67e45?w=500&q=80"
+    }
+  },
+  {
+    "model": "store.products",
+    "pk": 9,
+    "fields": {
+      "name": "Teclado Mecánico Keychron K2",
+      "price": 95,
+      "category": 3,
+      "description": "Teclado mecánico inalámbrico con distribución del 75% y retroiluminación RGB. Switches Gateron Brown intercambiables.",
+      "image": "https://images.unsplash.com/photo-1618384887929-16ec33fab9ef?w=500&q=80"
+    }
+  },
+  {
+    "model": "store.products",
+    "pk": 10,
+    "fields": {
+      "name": "Mouse Logitech MX Master 3S",
+      "price": 100,
+      "category": 3,
+      "description": "Mouse inalámbrico ergonómico premium para desarrolladores y diseñadores. Desplazamiento electromagnético MagSpeed ultra silencioso.",
+      "image": "https://images.unsplash.com/photo-1615663245857-ac93bb7c39e7?w=500&q=80"
+    }
+  },
+  {
+    "model": "store.products",
+    "pk": 11,
+    "fields": {
+      "name": "Auriculares Sony WH-1000XM4",
+      "price": 280,
+      "category": 3,
+      "description": "Auriculares inalámbricos de diadema con la mejor cancelación de ruido del mercado y audio de alta resolución.",
+      "image": "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500&q=80"
+    }
+  },
+  {
+    "model": "store.products",
+    "pk": 12,
+    "fields": {
+      "name": "Monitor LG UltraWide 29\"",
+      "price": 220,
+      "category": 3,
+      "description": "Monitor con relación de aspecto 21:9 IPS Full HD. Ideal para multitarea y flujos de trabajo con código y documentación en paralelo.",
+      "image": "https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?w=500&q=80"
+    }
+  }
+]
