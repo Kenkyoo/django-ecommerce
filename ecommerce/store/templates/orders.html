@@ -1,0 +1,341 @@
+{% extends 'base.html' %} {% block title %}Mis pedidos — ShopDjango{% endblock %} 
+{% block nav_orders %}active{% endblock %} 
+{% block extra_css %}
+
+<style>
+  .orders-section {
+    padding: 2.5rem 0 4rem;
+  }
+
+  /* ── Order card ── */
+  .order-card {
+    background: var(--clr-surface);
+    border: 1px solid var(--clr-border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    transition: box-shadow 0.15s;
+  }
+  .order-card:hover {
+    box-shadow: var(--shadow-md);
+  }
+
+  .order-card-header {
+    background: var(--clr-bg);
+    border-bottom: 1px solid var(--clr-border);
+    padding: 0.85rem 1.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .order-id {
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--clr-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  .order-id span {
+    color: var(--clr-accent);
+  }
+
+  .order-date {
+    font-size: 0.78rem;
+    color: var(--clr-muted);
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+  }
+
+  /* ── Status badge ── */
+  .status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.25rem 0.75rem;
+    border-radius: 999px;
+    font-size: 0.73rem;
+    font-weight: 700;
+  }
+  .status-badge.pending {
+    background: #fef9c3;
+    color: #a16207;
+    border: 1px solid #fde68a;
+  }
+  .status-badge.delivered {
+    background: #dcfce7;
+    color: #15803d;
+    border: 1px solid #bbf7d0;
+  }
+  .status-badge .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: currentColor;
+  }
+
+  /* ── Order body ── */
+  .order-card-body {
+    padding: 1.1rem 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .order-product-img {
+    width: 64px;
+    height: 64px;
+    border-radius: 8px;
+    object-fit: cover;
+    border: 1px solid var(--clr-border);
+    flex-shrink: 0;
+    background: var(--clr-bg);
+  }
+
+  .order-product-name {
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: var(--clr-text);
+    margin-bottom: 0.15rem;
+  }
+  .order-product-meta {
+    font-size: 0.8rem;
+    color: var(--clr-muted);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 0.9rem;
+    margin-top: 0.25rem;
+  }
+  .order-product-meta span {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+  }
+
+  .order-price {
+    margin-left: auto;
+    text-align: right;
+    flex-shrink: 0;
+  }
+  .order-price .amount {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--clr-text);
+    display: block;
+  }
+  .order-price .qty-label {
+    font-size: 0.75rem;
+    color: var(--clr-muted);
+  }
+
+  /* ── Empty state ── */
+  .empty-orders {
+    background: var(--clr-surface);
+    border: 1px solid var(--clr-border);
+    border-radius: var(--radius);
+    padding: 5rem 2rem;
+    text-align: center;
+  }
+  .empty-orders i {
+    font-size: 3.5rem;
+    color: var(--clr-border);
+    display: block;
+    margin-bottom: 1rem;
+  }
+  .empty-orders p {
+    color: var(--clr-muted);
+    font-size: 0.95rem;
+    margin-bottom: 1.25rem;
+  }
+
+  /* ── Login wall ── */
+  .login-wall {
+    background: var(--clr-surface);
+    border: 1px solid var(--clr-border);
+    border-radius: var(--radius);
+    padding: 4rem 2rem;
+    text-align: center;
+  }
+  .login-wall i {
+    font-size: 3rem;
+    color: var(--clr-accent);
+    opacity: 0.3;
+    display: block;
+    margin-bottom: 1rem;
+  }
+  .login-wall p {
+    color: var(--clr-muted);
+    font-size: 0.95rem;
+    margin-bottom: 1.25rem;
+  }
+
+  /* ── Stats strip ── */
+  .stats-strip {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 1.75rem;
+  }
+  .stat-pill {
+    background: var(--clr-surface);
+    border: 1px solid var(--clr-border);
+    border-radius: 10px;
+    padding: 0.75rem 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+  .stat-pill i {
+    font-size: 1.1rem;
+    color: var(--clr-accent);
+  }
+  .stat-pill .stat-val {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--clr-text);
+    line-height: 1;
+  }
+  .stat-pill .stat-label {
+    font-size: 0.73rem;
+    color: var(--clr-muted);
+    font-weight: 500;
+  }
+</style>
+
+{% endblock %} 
+{% block content %}
+<section class="orders-section">
+  <div class="container">
+    <!-- Page heading -->
+    <div class="mb-4">
+      <p class="section-eyebrow mb-0">Historial</p>
+      <h1 class="section-title">Mis pedidos</h1>
+    </div>
+
+    {% if not request.session.customer %}
+
+    <!-- Not logged in -->
+    <div class="login-wall">
+      <i class="bi bi-person-lock"></i>
+      <p>Necesitás iniciar sesión para ver tus pedidos.</p>
+      <a
+        href="{% url 'login' %}?return_url={% url 'orders' %}"
+        class="btn-accent text-decoration-none px-4 py-2"
+      >
+        <i class="bi bi-box-arrow-in-right me-2"></i>Iniciar sesión
+      </a>
+    </div>
+
+    {% elif orders %}
+
+    <!-- Stats strip -->
+    <div class="stats-strip">
+      <div class="stat-pill">
+        <i class="bi bi-receipt"></i>
+        <div>
+          <div class="stat-val">{{ orders|length }}</div>
+          <div class="stat-label">Pedido{{ orders|length|pluralize:"s" }}</div>
+        </div>
+      </div>
+      <div class="stat-pill">
+        <i class="bi bi-hourglass-split"></i>
+        <div>
+          <div class="stat-val">
+            {% with pending=0 %} {{ orders|length }} {% endwith %}
+          </div>
+          <div class="stat-label">En proceso</div>
+        </div>
+      </div>
+      <div class="stat-pill">
+        <i class="bi bi-bag-check"></i>
+        <div>
+          <div class="stat-val">
+            {% for order in orders %}{% if order.status %}✓{% endif %}{% endfor %}
+          </div>
+          <div class="stat-label">Entregados</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Order list -->
+    <div class="d-flex flex-column gap-3">
+      {% for order in orders %}
+      <div class="order-card">
+        <!-- Card header -->
+        <div class="order-card-header">
+          <span class="order-id"> Pedido <span>#{{ order.id }}</span> </span>
+          <span class="order-date">
+            <i class="bi bi-calendar3"></i>
+            {{ order.date }}
+          </span>
+          {% if order.status %}
+          <span class="status-badge delivered">
+            <span class="dot"></span> Entregado
+          </span>
+          {% else %}
+          <span class="status-badge pending">
+            <span class="dot"></span> En proceso
+          </span>
+          {% endif %}
+        </div>
+
+        <!-- Card body -->
+        <div class="order-card-body">
+          <!-- Product image -->
+          {% if order.product.image %}
+          <img
+            src="{{ order.product.image.url }}"
+            alt="{{ order.product.name }}"
+            class="order-product-img"
+          />
+          {% else %}
+          <img
+            src="https://placehold.co/64x64/EEF2FF/3730A3?text={{ order.product.name|urlencode }}"
+            alt="{{ order.product.name }}"
+            class="order-product-img"
+          />
+          {% endif %}
+
+          <!-- Product info -->
+          <div class="flex-grow-1">
+            <p class="order-product-name mb-0">{{ order.product.name }}</p>
+            <div class="order-product-meta">
+              <span
+                ><i class="bi bi-tag"></i> {{ order.product.category.name
+                }}</span
+              >
+              <span><i class="bi bi-geo-alt"></i> {{ order.address }}</span>
+              <span><i class="bi bi-telephone"></i> {{ order.phone }}</span>
+            </div>
+          </div>
+
+          <!-- Price -->
+          <div class="order-price">
+            <span class="amount">${{ order.price }}</span>
+            <span class="qty-label">× {{ order.quantity }} ud.</span>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
+    {% else %}
+
+    <!-- No orders yet -->
+    <div class="empty-orders">
+      <i class="bi bi-bag-x"></i>
+      <p>Todavía no realizaste ningún pedido.</p>
+      <a
+        href="{% url 'store' %}"
+        class="btn-accent text-decoration-none px-4 py-2"
+      >
+        <i class="bi bi-grid me-2"></i>Ver productos
+      </a>
+    </div>
+
+    {% endif %}
+  </div>
+</section>
+{% endblock %}
