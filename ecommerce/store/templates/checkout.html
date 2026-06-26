@@ -1,0 +1,529 @@
+{% extends 'base.html' %} 
+{% block title %}Checkout — ShopDjango{% endblock %}
+{% block extra_css %}
+
+<style>
+  .checkout-section {
+    padding: 2.5rem 0 4rem;
+  }
+
+  /* ── Form card ── */
+  .checkout-card {
+    background: var(--clr-surface);
+    border: 1px solid var(--clr-border);
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+  .checkout-card-header {
+    background: var(--clr-bg);
+    border-bottom: 1px solid var(--clr-border);
+    padding: 1rem 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+  .checkout-card-header i {
+    color: var(--clr-accent);
+    font-size: 1.1rem;
+  }
+  .checkout-card-header span {
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--clr-text);
+  }
+  .checkout-card-body {
+    padding: 1.5rem;
+  }
+
+  /* ── Steps indicator ── */
+  .steps-bar {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    margin-bottom: 2rem;
+  }
+  .step {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--clr-muted);
+  }
+  .step.done .step-num {
+    background: #22c55e;
+    border-color: #22c55e;
+    color: #fff;
+  }
+  .step.done {
+    color: #22c55e;
+  }
+  .step.active .step-num {
+    background: var(--clr-accent);
+    border-color: var(--clr-accent);
+    color: #fff;
+  }
+  .step.active {
+    color: var(--clr-accent);
+  }
+  .step-num {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    border: 2px solid var(--clr-border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.7rem;
+    font-weight: 700;
+    flex-shrink: 0;
+    background: var(--clr-surface);
+  }
+  .step-line {
+    flex: 1;
+    height: 2px;
+    background: var(--clr-border);
+    margin: 0 0.4rem;
+  }
+
+  /* ── Order item mini ── */
+  .order-item-mini {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.65rem 0;
+    border-bottom: 1px solid var(--clr-border);
+  }
+  .order-item-mini:last-of-type {
+    border-bottom: none;
+  }
+  .order-mini-img {
+    width: 44px;
+    height: 44px;
+    border-radius: 7px;
+    object-fit: cover;
+    border: 1px solid var(--clr-border);
+    flex-shrink: 0;
+    background: var(--clr-bg);
+  }
+  .order-mini-name {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--clr-text);
+    flex: 1;
+    line-height: 1.3;
+  }
+  .order-mini-qty {
+    font-size: 0.75rem;
+    color: var(--clr-muted);
+  }
+  .order-mini-price {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--clr-text);
+    white-space: nowrap;
+  }
+
+  /* ── Summary totals ── */
+  .summary-card {
+    background: var(--clr-surface);
+    border: 1px solid var(--clr-border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    position: sticky;
+    top: 80px;
+  }
+  .summary-card-header {
+    background: var(--clr-bg);
+    border-bottom: 1px solid var(--clr-border);
+    padding: 1rem 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+  .summary-card-header i {
+    color: var(--clr-accent);
+    font-size: 1.1rem;
+  }
+  .summary-card-header span {
+    font-weight: 600;
+    font-size: 0.9rem;
+  }
+  .summary-card-body {
+    padding: 1.25rem 1.5rem;
+  }
+
+  .summary-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.875rem;
+    color: var(--clr-muted);
+    margin-bottom: 0.5rem;
+  }
+  .summary-row.total {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--clr-text);
+    padding-top: 0.75rem;
+    margin-top: 0.5rem;
+    border-top: 1px solid var(--clr-border);
+    margin-bottom: 0;
+  }
+
+  /* ── Submit button ── */
+  .btn-place-order {
+    width: 100%;
+    background: var(--clr-accent);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    padding: 0.8rem;
+    margin-top: 1.25rem;
+    transition:
+      opacity 0.15s,
+      transform 0.1s;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+  }
+  .btn-place-order:hover {
+    opacity: 0.87;
+    transform: translateY(-1px);
+  }
+
+  .secure-note {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.35rem;
+    font-size: 0.73rem;
+    color: var(--clr-muted);
+    margin-top: 0.75rem;
+  }
+</style>
+{% endblock %} {% block content %}
+<section class="checkout-section">
+  <div class="container">
+    <!-- Page heading -->
+    <div class="mb-4">
+      <p class="section-eyebrow mb-0">Último paso</p>
+      <h1 class="section-title">Confirmar pedido</h1>
+    </div>
+
+    <!-- Steps -->
+    <div class="steps-bar mb-4">
+      <div class="step done">
+        <div class="step-num">
+          <i class="bi bi-check" style="font-size: 0.7rem"></i>
+        </div>
+        <span>Carrito</span>
+      </div>
+      <div class="step-line"></div>
+      <div class="step active">
+        <div class="step-num">2</div>
+        <span>Entrega</span>
+      </div>
+      <div class="step-line"></div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <span>Confirmado</span>
+      </div>
+    </div>
+
+    <div class="row g-4 align-items-start">
+      <!-- ── Delivery form ── -->
+      <div class="col-lg-7">
+        <form method="POST" action="{% url 'checkout' %}">
+          {% csrf_token %}
+
+          <!-- Delivery details -->
+          <div class="checkout-card mb-3">
+            <div class="checkout-card-header">
+              <i class="bi bi-geo-alt-fill"></i>
+              <span>Datos de entrega</span>
+            </div>
+            <div class="checkout-card-body">
+              <div class="mb-3">
+                <label class="form-label-custom">Dirección de entrega</label>
+                <div style="position: relative">
+                  <i
+                    class="bi bi-house"
+                    style="
+                      position: absolute;
+                      left: 0.85rem;
+                      top: 50%;
+                      transform: translateY(-50%);
+                      color: var(--clr-muted);
+                      pointer-events: none;
+                    "
+                  ></i>
+                  <input
+                    type="text"
+                    name="address"
+                    class="form-control-custom"
+                    style="padding-left: 2.4rem; width: 100%"
+                    placeholder="Av. Corrientes 1234, Buenos Aires"
+                    required
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label class="form-label-custom">Teléfono de contacto</label>
+                <div style="position: relative">
+                  <i
+                    class="bi bi-telephone"
+                    style="
+                      position: absolute;
+                      left: 0.85rem;
+                      top: 50%;
+                      transform: translateY(-50%);
+                      color: var(--clr-muted);
+                      pointer-events: none;
+                    "
+                  ></i>
+                  <input
+                    type="tel"
+                    name="phone"
+                    class="form-control-custom"
+                    style="padding-left: 2.4rem; width: 100%"
+                    placeholder="1122334455"
+                    required
+                    minlength="10"
+                    maxlength="10"
+                  />
+                </div>
+                <p
+                  style="
+                    font-size: 0.73rem;
+                    color: var(--clr-muted);
+                    margin-top: 0.25rem;
+                  "
+                >
+                  Para coordinar la entrega
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Payment (decorative for portfolio) -->
+          <div class="checkout-card">
+            <div class="checkout-card-header">
+              <i class="bi bi-credit-card-fill"></i>
+              <span>Método de pago</span>
+            </div>
+            <div class="checkout-card-body">
+              <!-- Fake payment option pills -->
+              <div class="d-flex gap-2 flex-wrap mb-3">
+                <label style="cursor: pointer">
+                  <input
+                    type="radio"
+                    name="payment"
+                    value="card"
+                    checked
+                    class="d-none"
+                  />
+                  <span
+                    style="
+                      display: inline-flex;
+                      align-items: center;
+                      gap: 0.4rem;
+                      padding: 0.4rem 0.9rem;
+                      border-radius: 999px;
+                      border: 1.5px solid var(--clr-accent);
+                      background: var(--clr-accent-lt);
+                      color: var(--clr-accent);
+                      font-size: 0.8rem;
+                      font-weight: 600;
+                    "
+                  >
+                    <i class="bi bi-credit-card"></i> Tarjeta
+                  </span>
+                </label>
+                <label style="cursor: pointer">
+                  <input
+                    type="radio"
+                    name="payment"
+                    value="transfer"
+                    class="d-none"
+                  />
+                  <span
+                    style="
+                      display: inline-flex;
+                      align-items: center;
+                      gap: 0.4rem;
+                      padding: 0.4rem 0.9rem;
+                      border-radius: 999px;
+                      border: 1.5px solid var(--clr-border);
+                      font-size: 0.8rem;
+                      font-weight: 500;
+                      color: var(--clr-muted);
+                    "
+                  >
+                    <i class="bi bi-bank"></i> Transferencia
+                  </span>
+                </label>
+                <label style="cursor: pointer">
+                  <input
+                    type="radio"
+                    name="payment"
+                    value="cash"
+                    class="d-none"
+                  />
+                  <span
+                    style="
+                      display: inline-flex;
+                      align-items: center;
+                      gap: 0.4rem;
+                      padding: 0.4rem 0.9rem;
+                      border-radius: 999px;
+                      border: 1.5px solid var(--clr-border);
+                      font-size: 0.8rem;
+                      font-weight: 500;
+                      color: var(--clr-muted);
+                    "
+                  >
+                    <i class="bi bi-cash"></i> Efectivo
+                  </span>
+                </label>
+              </div>
+
+              <!-- Fake card fields -->
+              <div class="mb-3">
+                <label class="form-label-custom">Número de tarjeta</label>
+                <input
+                  type="text"
+                  class="form-control-custom"
+                  style="width: 100%"
+                  placeholder="•••• •••• •••• ••••"
+                  maxlength="19"
+                  disabled
+                />
+              </div>
+              <div class="row g-3">
+                <div class="col-6">
+                  <label class="form-label-custom">Vencimiento</label>
+                  <input
+                    type="text"
+                    class="form-control-custom"
+                    style="width: 100%"
+                    placeholder="MM / AA"
+                    disabled
+                  />
+                </div>
+                <div class="col-6">
+                  <label class="form-label-custom">CVV</label>
+                  <input
+                    type="text"
+                    class="form-control-custom"
+                    style="width: 100%"
+                    placeholder="•••"
+                    disabled
+                  />
+                </div>
+              </div>
+
+              <div
+                style="
+                  background: var(--clr-accent-lt);
+                  border: 1px solid #c7d2fe;
+                  border-radius: 8px;
+                  padding: 0.6rem 0.9rem;
+                  font-size: 0.78rem;
+                  color: var(--clr-accent);
+                  margin-top: 1rem;
+                  display: flex;
+                  align-items: center;
+                  gap: 0.4rem;
+                "
+              >
+                <i class="bi bi-info-circle-fill"></i>
+                Campos de pago deshabilitados — entorno de demostración.
+              </div>
+            </div>
+          </div>
+
+          <!-- Submit inside the form -->
+          <button type="submit" class="btn-place-order mt-3">
+            <i class="bi bi-bag-check"></i> Confirmar pedido
+          </button>
+          <p class="secure-note">
+            <i class="bi bi-shield-lock-fill"></i> Transacción segura — proyecto
+            de demo
+          </p>
+        </form>
+      </div>
+
+      <!-- ── Order summary ── -->
+      <div class="col-lg-5">
+        <div class="summary-card">
+          <div class="summary-card-header">
+            <i class="bi bi-bag"></i>
+            <span>Tu pedido</span>
+          </div>
+          <div class="summary-card-body">
+            <!-- Items -->
+            {% for item in products %}
+            <div class="order-item-mini">
+              {% if item.product.image %}
+              <img
+                src="{{ item.product.image }}"
+                alt="{{ item.product.name }}"
+                class="order-mini-img"
+              />
+              {% else %}
+              <img
+                src="https://placehold.co/44x44/EEF2FF/3730A3?text={{ item.product.name|urlencode }}"
+                alt="{{ item.product.name }}"
+                class="order-mini-img"
+              />
+              {% endif %}
+              <div class="order-mini-name">
+                {{ item.product.name }}
+                <br />
+                <span class="order-mini-qty">× {{ item.quantity }}</span>
+              </div>
+              <span class="order-mini-price">${{ item.subtotal }}</span>
+            </div>
+            {% endfor %}
+
+            <!-- Totals -->
+            <div class="mt-2">
+              <div class="summary-row">
+                <span>Subtotal</span>
+                <span>${{ total }}</span>
+              </div>
+              <div class="summary-row">
+                <span>Envío</span>
+                <span style="color: #22c55e; font-weight: 600">Gratis</span>
+              </div>
+              <div class="summary-row total">
+                <span>Total</span>
+                <span>${{ total }}</span>
+              </div>
+            </div>
+
+            <a
+              href="{% url 'cart' %}"
+              style="
+                display: block;
+                text-align: center;
+                font-size: 0.8rem;
+                color: var(--clr-muted);
+                text-decoration: none;
+                margin-top: 0.75rem;
+              "
+            >
+              <i class="bi bi-arrow-left me-1"></i>Editar carrito
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
