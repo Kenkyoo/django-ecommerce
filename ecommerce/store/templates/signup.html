@@ -1,0 +1,238 @@
+{% extends 'base.html' %}
+{% block title %}Crear cuenta — ShopDjango{% endblock %} {% block extra_css %}
+
+<style>
+  .auth-wrapper {
+    min-height: calc(100vh - 130px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2.5rem 1rem;
+  }
+
+  .auth-card {
+    background: var(--clr-surface);
+    border: 1px solid var(--clr-border);
+    border-radius: 14px;
+    box-shadow: var(--shadow-md);
+    width: 100%;
+    max-width: 480px;
+    overflow: hidden;
+  }
+
+  .auth-header {
+    background: linear-gradient(135deg, var(--clr-accent) 0%, #4f46e5 100%);
+    padding: 2rem 2rem 1.8rem;
+    text-align: center;
+  }
+  .auth-header .brand {
+    font-family: "Playfair Display", serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: -0.5px;
+  }
+  .auth-header p {
+    color: rgba(255, 255, 255, 0.75);
+    font-size: 0.85rem;
+    margin: 0.3rem 0 0;
+  }
+
+  .auth-body {
+    padding: 2rem;
+  }
+
+  .input-icon-wrap {
+    position: relative;
+  }
+  .input-icon-wrap .bi {
+    position: absolute;
+    left: 0.85rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--clr-muted);
+    font-size: 0.95rem;
+    pointer-events: none;
+  }
+  .input-icon-wrap .form-control-custom {
+    padding-left: 2.4rem;
+    width: 100%;
+  }
+
+  .btn-auth {
+    width: 100%;
+    background: var(--clr-accent);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    padding: 0.7rem;
+    transition:
+      opacity 0.15s,
+      transform 0.1s;
+    cursor: pointer;
+  }
+  .btn-auth:hover {
+    opacity: 0.87;
+    transform: translateY(-1px);
+  }
+
+  .auth-divider {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: var(--clr-muted);
+    font-size: 0.75rem;
+    margin: 1.25rem 0;
+  }
+  .auth-divider::before,
+  .auth-divider::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: var(--clr-border);
+  }
+
+  .auth-footer-link {
+    text-align: center;
+    font-size: 0.85rem;
+    color: var(--clr-muted);
+  }
+  .auth-footer-link a {
+    color: var(--clr-accent);
+    font-weight: 600;
+    text-decoration: none;
+  }
+  .auth-footer-link a:hover {
+    text-decoration: underline;
+  }
+
+  .field-hint {
+    font-size: 0.73rem;
+    color: var(--clr-muted);
+    margin-top: 0.25rem;
+  }
+</style>
+{% endblock %} {% block content %}
+<div class="auth-wrapper">
+  <div class="auth-card">
+    <!-- Header -->
+    <div class="auth-header">
+      <div class="brand">ShopDjango</div>
+      <p>Crea tu cuenta en segundos</p>
+    </div>
+
+    <!-- Body -->
+    <div class="auth-body">
+      {% if error %}
+      <div class="alert-custom mb-4">
+        <i class="bi bi-exclamation-circle me-2"></i>{{ error }}
+      </div>
+      {% endif %}
+
+      <form method="POST" action="{% url 'signup' %}">
+        {% csrf_token %}
+
+        <!-- Name row -->
+        <div class="row g-3 mb-3">
+          <div class="col-6">
+            <label class="form-label-custom">Nombre</label>
+            <div class="input-icon-wrap">
+              <i class="bi bi-person"></i>
+              <input
+                type="text"
+                name="firstname"
+                class="form-control-custom"
+                placeholder="Ana"
+                value="{{ values.first_name|default:'' }}"
+                required
+                minlength="3"
+              />
+            </div>
+          </div>
+          <div class="col-6">
+            <label class="form-label-custom">Apellido</label>
+            <div class="input-icon-wrap">
+              <i class="bi bi-person"></i>
+              <input
+                type="text"
+                name="lastname"
+                class="form-control-custom"
+                placeholder="García"
+                value="{{ values.last_name|default:'' }}"
+                required
+                minlength="3"
+              />
+            </div>
+          </div>
+        </div>
+
+        <!-- Phone -->
+        <div class="mb-3">
+          <label class="form-label-custom">Teléfono</label>
+          <div class="input-icon-wrap">
+            <i class="bi bi-telephone"></i>
+            <input
+              type="tel"
+              name="phone"
+              class="form-control-custom"
+              placeholder="1122334455"
+              value="{{ values.phone|default:'' }}"
+              required
+              minlength="10"
+              maxlength="10"
+            />
+          </div>
+          <p class="field-hint">10 dígitos, sin espacios ni guiones</p>
+        </div>
+
+        <!-- Email -->
+        <div class="mb-3">
+          <label class="form-label-custom">Correo electrónico</label>
+          <div class="input-icon-wrap">
+            <i class="bi bi-envelope"></i>
+            <input
+              type="email"
+              name="email"
+              class="form-control-custom"
+              placeholder="tu@email.com"
+              value="{{ values.email|default:'' }}"
+              required
+              autocomplete="email"
+            />
+          </div>
+        </div>
+
+        <!-- Password -->
+        <div class="mb-4">
+          <label class="form-label-custom">Contraseña</label>
+          <div class="input-icon-wrap">
+            <i class="bi bi-lock"></i>
+            <input
+              type="password"
+              name="password"
+              class="form-control-custom"
+              placeholder="Mínimo 5 caracteres"
+              required
+              minlength="5"
+              autocomplete="new-password"
+            />
+          </div>
+        </div>
+
+        <button type="submit" class="btn-auth">
+          <i class="bi bi-person-plus me-2"></i>Crear cuenta
+        </button>
+      </form>
+
+      <div class="auth-divider">o</div>
+
+      <p class="auth-footer-link">
+        ¿Ya tienes cuenta?
+        <a href="{% url 'login' %}">Iniciar sesión</a>
+      </p>
+    </div>
+  </div>
+</div>
+{% endblock %}
