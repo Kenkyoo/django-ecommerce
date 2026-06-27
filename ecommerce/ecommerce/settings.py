@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-gqu187!!*y2$bqc*0udo)!kff9y-vo=ik$u_a3@8vw$-!9tq@3
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DEBUG', 'False') == 'True'
 
-ALLOWED_HOSTS = ['https://django-ecommerce-au5o.onrender.com']  # O tu dominio de Render: ['tu-app.onrender.com']
+ALLOWED_HOSTS = ['django-ecommerce-au5o.onrender.com']
 
 
 # Application definition
