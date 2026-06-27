@@ -1,231 +1,38 @@
-{% extends 'base.html' %} {% block title %}Tienda — ShopDjango{% endblock %} {% block nav_store %}active{% endblock %} {% block extra_css %}
-<style>
-  /* ── Hero strip ── */
-  .store-hero {
-    background: linear-gradient(135deg, var(--clr-accent) 0%, #4f46e5 100%);
-    color: #fff;
-    padding: 3rem 0 2.5rem;
-  }
-  .store-hero .hero-eyebrow {
-    font-size: 0.7rem;
-    font-weight: 700;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    opacity: 0.7;
-    margin-bottom: 0.4rem;
-  }
-  .store-hero h1 {
-    font-family: "Playfair Display", serif;
-    font-size: clamp(1.8rem, 4vw, 2.6rem);
-    font-weight: 700;
-    margin-bottom: 0.5rem;
-  }
-  .store-hero p {
-    opacity: 0.8;
-    font-size: 0.95rem;
-    max-width: 480px;
-  }
+{% extends 'base.html' %}
 
-  /* ── Category bar ── */
-  .category-bar {
-    background: var(--clr-surface);
-    border-bottom: 1px solid var(--clr-border);
-    padding: 0.75rem 0;
-    position: sticky;
-    top: 57px;
-    z-index: 100;
-  }
-  .category-bar .scroll-wrap {
-    display: flex;
-    gap: 0.5rem;
-    overflow-x: auto;
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-    padding-bottom: 2px;
-  }
-  .category-bar .scroll-wrap::-webkit-scrollbar {
-    display: none;
-  }
+{% block title %}Tienda — ShopDjango{% endblock %}
 
-  .cat-pill {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.35rem;
-    padding: 0.35rem 0.9rem;
-    border-radius: 999px;
-    border: 1.5px solid var(--clr-border);
-    background: transparent;
-    font-size: 0.8rem;
-    font-weight: 500;
-    color: var(--clr-muted);
-    text-decoration: none;
-    white-space: nowrap;
-    transition:
-      border-color 0.15s,
-      background 0.15s,
-      color 0.15s;
-    cursor: pointer;
-  }
-  .cat-pill:hover,
-  .cat-pill.active {
-    border-color: var(--clr-accent);
-    background: var(--clr-accent-lt);
-    color: var(--clr-accent);
-  }
+{% block nav_store %}active{% endblock %}
 
-  /* ── Product grid ── */
-  .products-section {
-    padding: 2.5rem 0 4rem;
-  }
+{% block content %}
 
-  .product-card {
-    background: var(--clr-surface);
-    border: 1px solid var(--clr-border);
-    border-radius: var(--radius);
-    overflow: hidden;
-    transition:
-      box-shadow 0.2s,
-      transform 0.2s;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-  }
-  .product-card:hover {
-    box-shadow: var(--shadow-md);
-    transform: translateY(-3px);
-  }
-
-  .product-img-wrap {
-    position: relative;
-    background: var(--clr-bg);
-    aspect-ratio: 4/3;
-    overflow: hidden;
-  }
-  .product-img-wrap img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.35s;
-  }
-  .product-card:hover .product-img-wrap img {
-    transform: scale(1.04);
-  }
-
-  .product-category-tag {
-    position: absolute;
-    top: 0.65rem;
-    left: 0.65rem;
-    background: rgba(255, 255, 255, 0.9);
-    backdrop-filter: blur(4px);
-    border-radius: 999px;
-    padding: 0.2rem 0.6rem;
-    font-size: 0.68rem;
-    font-weight: 600;
-    color: var(--clr-accent);
-    border: 1px solid var(--clr-accent-lt);
-  }
-
-  .product-body {
-    padding: 1rem 1.1rem 1.2rem;
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-  }
-  .product-name {
-    font-weight: 600;
-    font-size: 0.95rem;
-    color: var(--clr-text);
-    margin-bottom: 0.3rem;
-    line-height: 1.35;
-  }
-  .product-desc {
-    font-size: 0.8rem;
-    color: var(--clr-muted);
-    flex: 1;
-    margin-bottom: 0.9rem;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-  }
-  .product-footer {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 0.5rem;
-  }
-  .product-price {
-    font-size: 1.15rem;
-    font-weight: 700;
-    color: var(--clr-text);
-  }
-
-  /* ── Add/Remove controls ── */
-  .qty-form {
-    display: flex;
-    align-items: center;
-    gap: 0.4rem;
-  }
-  .qty-btn {
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    border: 1.5px solid var(--clr-border);
-    background: var(--clr-bg);
-    color: var(--clr-text);
-    font-size: 0.9rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition:
-      border-color 0.15s,
-      background 0.15s;
-  }
-  .qty-btn:hover {
-    border-color: var(--clr-accent);
-    background: var(--clr-accent-lt);
-    color: var(--clr-accent);
-  }
-
-  /* ── Empty state ── */
-  .empty-state {
-    padding: 5rem 0;
-    text-align: center;
-    color: var(--clr-muted);
-  }
-  .empty-state i {
-    font-size: 3rem;
-    opacity: 0.3;
-    display: block;
-    margin-bottom: 1rem;
-  }
-</style>
-{% endblock %} {% block content %}
-
-<!-- Hero -->
-<section class="store-hero">
-  <div class="container">
-    <p class="hero-eyebrow">Nueva colección disponible</p>
-    <h1>Descubre nuestros<br />productos</h1>
-    <p>Calidad y estilo en cada artículo. Encuentra lo que necesitas.</p>
+<!-- Hero Section -->
+<section class="bg-primary bg-gradient text-white py-5">
+  <div class="container py-4">
+    <p class="text-light-emphasis text-uppercase fw-bold mb-2" style="font-size: 0.75rem; letter-spacing: 0.15em;">
+      Nueva colección disponible
+    </p>
+    <h1 class="display-4 fw-bold">Descubre nuestros<br />productos</h1>
+    <p class="lead text-light-emphasis" style="max-width: 480px;">
+      Calidad y estilo en cada artículo. Encuentra lo que necesitas.
+    </p>
   </div>
 </section>
 
-<!-- Category bar -->
-<div class="category-bar">
-  <div class="container">
-    <div class="scroll-wrap">
+<!-- Category Bar -->
+<div class="bg-white border-bottom sticky-top" style="top: 57px; z-index: 100;">
+  <div class="container py-2">
+    <div class="category-scroll">
       <a
         href="{% url 'store' %}"
-        class="cat-pill {% if not request.GET.category %}active{% endif %}"
+        class="category-pill {% if not request.GET.category %}active{% endif %}"
       >
-        <i class="bi bi-grid-3x3-gap"></i> Todos
+        <i class="bi bi-grid-3x3-gap me-1"></i> Todos
       </a>
       {% for category in categories %}
       <a
         href="{% url 'store' %}?category={{ category.id }}"
-        class="cat-pill {% if request.GET.category == category.id|stringformat:'s' %}active{% endif %}"
+        class="category-pill {% if request.GET.category == category.id|stringformat:'s' %}active{% endif %}"
       >
         {{ category.name }}
       </a>
@@ -234,12 +41,12 @@
   </div>
 </div>
 
-<!-- Products -->
-<section class="products-section">
+<!-- Products Section -->
+<section class="py-5">
   <div class="container">
     <div class="d-flex align-items-baseline justify-content-between mb-4">
       <div>
-        <p class="section-eyebrow mb-0">Catálogo</p>
+        <p class="text-uppercase fw-bold text-primary small mb-0">Catálogo</p>
         <h2 class="section-title mb-0">
           {% if products %}{{ products|length }} producto{{ products|length|pluralize:"s" }}{% else %}Productos{% endif %}
         </h2>
@@ -247,64 +54,49 @@
     </div>
 
     {% if products %}
-    <div class="row g-3 g-md-4">
+    <div class="row g-4">
       {% for product in products %}
       <div class="col-6 col-md-4 col-lg-3">
-        <div class="product-card">
-          <div class="product-img-wrap">
+        <div class="card h-100">
+          <div class="product-img-container position-relative">
             {% if product.image %}
             <img src="{{ product.image }}" alt="{{ product.name }}" />
             {% else %}
             <img
-              src="https://placehold.co/400x300/EEF2FF/3730A3?text={{ product.name|urlencode }}"
+              src="https://placehold.co/400x300/0d6efd/ffffff?text={{ product.name|urlencode }}"
               alt="{{ product.name }}"
             />
             {% endif %}
-            <span class="product-category-tag"
-              >{{ product.category.name }}</span
-            >
+            <span class="position-absolute top-0 start-0 m-2 badge bg-primary bg-opacity-75">
+              {{ product.category.name }}
+            </span>
           </div>
-          <div class="product-body">
-            <p class="product-name">{{ product.name }}</p>
-            {% if product.description %}
-            <p class="product-desc">{{ product.description }}</p>
-            {% else %}
-            <p class="product-desc text-muted fst-italic">Sin descripción</p>
-            {% endif %}
-            <div class="product-footer">
-              <span class="product-price">${{ product.price }}</span>
-              <div class="qty-form">
+          <div class="card-body d-flex flex-column">
+            <h5 class="card-title fw-bold">{{ product.name }}</h5>
+            <p class="card-text small text-muted flex-grow-1">
+              {% if product.description %}
+                {{ product.description|truncatechars:50 }}
+              {% else %}
+                <span class="fst-italic">Sin descripción</span>
+              {% endif %}
+            </p>
+            <div class="d-flex align-items-center justify-content-between mt-2">
+              <span class="h5 fw-bold mb-0">${{ product.price }}</span>
+              <div class="d-flex gap-1">
                 <!-- Remove -->
-                <form method="POST" action="{% url 'homepage' %}">
+                <form method="POST" action="{% url 'store' %}" class="d-inline">
                   {% csrf_token %}
-                  <input
-                    type="hidden"
-                    name="product"
-                    value="{{ product.id }}"
-                  />
+                  <input type="hidden" name="product" value="{{ product.id }}" />
                   <input type="hidden" name="remove" value="true" />
-                  <button type="submit" class="qty-btn" title="Quitar uno">
+                  <button type="submit" class="quantity-btn danger" title="Quitar uno">
                     <i class="bi bi-dash"></i>
                   </button>
                 </form>
                 <!-- Add -->
-                <form method="POST" action="{% url 'homepage' %}">
+                <form method="POST" action="{% url 'store' %}" class="d-inline">
                   {% csrf_token %}
-                  <input
-                    type="hidden"
-                    name="product"
-                    value="{{ product.id }}"
-                  />
-                  <button
-                    type="submit"
-                    class="qty-btn"
-                    style="
-                      border-color: var(--clr-accent);
-                      background: var(--clr-accent-lt);
-                      color: var(--clr-accent);
-                    "
-                    title="Añadir al carrito"
-                  >
+                  <input type="hidden" name="product" value="{{ product.id }}" />
+                  <button type="submit" class="quantity-btn" style="border-color: #0d6efd; background: #e7f1ff; color: #0d6efd;" title="Añadir al carrito">
                     <i class="bi bi-plus"></i>
                   </button>
                 </form>
@@ -319,10 +111,8 @@
     {% else %}
     <div class="empty-state">
       <i class="bi bi-box-seam"></i>
-      <p class="fw-500 mb-1">No hay productos en esta categoría</p>
-      <a href="{% url 'store' %}" class="btn-outline-custom mt-2 d-inline-block"
-        >Ver todos</a
-      >
+      <h5 class="mb-2">No hay productos en esta categoría</h5>
+      <a href="{% url 'store' %}" class="btn btn-outline-primary">Ver todos</a>
     </div>
     {% endif %}
   </div>

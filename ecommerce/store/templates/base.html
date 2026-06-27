@@ -17,217 +17,276 @@
     />
     <!-- Google Fonts -->
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@700&display=swap"
       rel="stylesheet"
     />
 
     <style>
-      /* ── Tokens ── */
-      :root {
-        --clr-bg: #fafaf8;
-        --clr-surface: #ffffff;
-        --clr-border: #e7e5e4;
-        --clr-text: #1c1917;
-        --clr-muted: #78716c;
-        --clr-accent: #3730a3;
-        --clr-accent-lt: #eef2ff;
-        --clr-danger: #dc2626;
-        --radius: 10px;
-        --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.07);
-        --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.09);
-      }
-
-      /* ── Base ── */
       body {
-        background: var(--clr-bg);
-        color: var(--clr-text);
         font-family: "Inter", sans-serif;
-        font-size: 0.9375rem;
-        line-height: 1.6;
         min-height: 100vh;
         display: flex;
         flex-direction: column;
       }
 
-      /* ── Navbar ── */
-      .navbar-main {
-        background: var(--clr-surface);
-        border-bottom: 1px solid var(--clr-border);
-        padding: 0.85rem 0;
-      }
-
-      .navbar-brand-text {
+      .navbar-brand {
         font-family: "Playfair Display", serif;
-        font-size: 1.45rem;
+        font-size: 1.5rem;
         font-weight: 700;
-        color: var(--clr-accent) !important;
-        letter-spacing: -0.5px;
-        text-decoration: none;
       }
 
-      .nav-link-custom {
-        color: var(--clr-text) !important;
-        font-weight: 500;
-        font-size: 0.875rem;
-        padding: 0.35rem 0.7rem !important;
-        border-radius: 6px;
-        transition:
-          background 0.15s,
-          color 0.15s;
-        text-decoration: none;
-      }
-      .nav-link-custom:hover {
-        background: var(--clr-accent-lt);
-        color: var(--clr-accent) !important;
-      }
-      .nav-link-custom.active {
-        color: var(--clr-accent) !important;
+      .navbar-brand span {
+        color: #6c757d;
       }
 
       .cart-badge {
-        background: var(--clr-accent);
-        color: #fff;
         font-size: 0.65rem;
-        font-weight: 600;
-        padding: 2px 6px;
-        border-radius: 20px;
-        vertical-align: super;
+        padding: 0.25rem 0.5rem;
+        margin-left: -0.5rem;
+        margin-top: -0.5rem;
       }
 
-      .btn-nav-accent {
-        background: var(--clr-accent);
-        color: #fff !important;
-        font-size: 0.8rem;
-        font-weight: 600;
-        padding: 0.4rem 1rem;
-        border-radius: 6px;
+      .btn-outline-primary:hover {
+        transform: translateY(-1px);
+        transition: transform 0.15s;
+      }
+
+      .card {
+        transition: transform 0.2s, box-shadow 0.2s;
         border: none;
-        text-decoration: none;
-        transition: opacity 0.15s;
-      }
-      .btn-nav-accent:hover {
-        opacity: 0.85;
-        color: #fff !important;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
       }
 
-      /* ── Cards ── */
-      .card-custom {
-        background: var(--clr-surface);
-        border: 1px solid var(--clr-border);
-        border-radius: var(--radius);
-        box-shadow: var(--shadow-sm);
+      .card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
       }
 
-      /* ── Buttons ── */
-      .btn-accent {
-        background: var(--clr-accent);
-        color: #fff;
+      .product-img-container {
+        aspect-ratio: 4/3;
+        overflow: hidden;
+        background: #f8f9fa;
+      }
+
+      .product-img-container img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.3s;
+      }
+
+      .card:hover .product-img-container img {
+        transform: scale(1.05);
+      }
+
+      .section-title {
+        font-family: "Playfair Display", serif;
+        font-weight: 700;
+      }
+
+      .footer {
+        margin-top: auto;
+        border-top: 1px solid #dee2e6;
+        background: #fff;
+      }
+
+      .auth-card {
+        max-width: 440px;
+        margin: 0 auto;
         border: none;
-        border-radius: 7px;
-        font-weight: 600;
-        font-size: 0.875rem;
-        padding: 0.55rem 1.25rem;
-        transition:
-          opacity 0.15s,
-          transform 0.1s;
+        box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
       }
-      .btn-accent:hover {
-        opacity: 0.87;
-        color: #fff;
+
+      .auth-header {
+        background: linear-gradient(135deg, #0d6efd, #0a58ca);
+        color: white;
+        padding: 2rem;
+        border-radius: 0.5rem 0.5rem 0 0;
+      }
+
+      .btn-primary {
+        transition: opacity 0.15s, transform 0.1s;
+      }
+
+      .btn-primary:hover {
+        opacity: 0.9;
         transform: translateY(-1px);
       }
 
-      .btn-outline-custom {
-        border: 1.5px solid var(--clr-accent);
-        color: var(--clr-accent);
-        border-radius: 7px;
-        font-weight: 600;
+      .btn-outline-secondary:hover {
+        transform: translateY(-1px);
+        transition: transform 0.15s;
+      }
+
+      .empty-state {
+        padding: 5rem 1rem;
+        text-align: center;
+        background: #f8f9fa;
+        border-radius: 0.5rem;
+      }
+
+      .empty-state i {
+        font-size: 4rem;
+        color: #dee2e6;
+        display: block;
+        margin-bottom: 1rem;
+      }
+
+      .step-indicator .step {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
         font-size: 0.875rem;
-        padding: 0.5rem 1.2rem;
-        background: transparent;
-        transition:
-          background 0.15s,
-          color 0.15s;
-      }
-      .btn-outline-custom:hover {
-        background: var(--clr-accent-lt);
-        color: var(--clr-accent);
+        color: #6c757d;
       }
 
-      /* ── Form inputs ── */
-      .form-control-custom {
-        border: 1.5px solid var(--clr-border);
-        border-radius: 7px;
-        padding: 0.6rem 0.9rem;
-        font-size: 0.9rem;
-        background: var(--clr-surface);
-        color: var(--clr-text);
-        transition:
-          border-color 0.15s,
-          box-shadow 0.15s;
-      }
-      .form-control-custom:focus {
-        border-color: var(--clr-accent);
-        box-shadow: 0 0 0 3px rgba(55, 48, 163, 0.12);
-        outline: none;
-      }
-      .form-label-custom {
-        font-size: 0.8rem;
+      .step-indicator .step.active {
+        color: #0d6efd;
         font-weight: 600;
-        color: var(--clr-muted);
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
-        margin-bottom: 0.3rem;
       }
 
-      /* ── Alert ── */
-      .alert-custom {
-        background: #fef2f2;
-        border: 1px solid #fecaca;
-        color: var(--clr-danger);
-        border-radius: 8px;
-        padding: 0.75rem 1rem;
+      .step-indicator .step.done {
+        color: #198754;
+      }
+
+      .step-indicator .step-number {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        font-size: 0.8rem;
+        border: 2px solid #dee2e6;
+        background: white;
+        flex-shrink: 0;
+      }
+
+      .step-indicator .step.active .step-number {
+        background: #0d6efd;
+        color: white;
+        border-color: #0d6efd;
+      }
+
+      .step-indicator .step.done .step-number {
+        background: #198754;
+        color: white;
+        border-color: #198754;
+      }
+
+      .step-indicator .step-line {
+        flex: 1;
+        height: 2px;
+        background: #dee2e6;
+      }
+
+      .status-badge {
+        font-size: 0.75rem;
+        font-weight: 600;
+        padding: 0.35rem 0.75rem;
+        border-radius: 999px;
+      }
+
+      .order-item {
+        border-bottom: 1px solid #dee2e6;
+        padding: 0.75rem 0;
+      }
+
+      .order-item:last-child {
+        border-bottom: none;
+      }
+
+      .category-scroll {
+        display: flex;
+        gap: 0.5rem;
+        overflow-x: auto;
+        padding-bottom: 0.5rem;
+        scrollbar-width: none;
+      }
+
+      .category-scroll::-webkit-scrollbar {
+        display: none;
+      }
+
+      .category-pill {
+        white-space: nowrap;
+        padding: 0.4rem 1rem;
+        border-radius: 999px;
+        border: 1.5px solid #dee2e6;
+        color: #6c757d;
+        text-decoration: none;
         font-size: 0.875rem;
         font-weight: 500;
+        transition: all 0.15s;
+        background: white;
       }
 
-      /* ── Section headings ── */
-      .section-title {
-        font-family: "Playfair Display", serif;
-        font-size: 1.6rem;
-        font-weight: 700;
-        color: var(--clr-text);
-      }
-      .section-eyebrow {
-        font-size: 0.72rem;
-        font-weight: 600;
-        text-transform: uppercase;
-        letter-spacing: 0.1em;
-        color: var(--clr-accent);
-        margin-bottom: 0.25rem;
+      .category-pill:hover,
+      .category-pill.active {
+        border-color: #0d6efd;
+        color: #0d6efd;
+        background: #e7f1ff;
       }
 
-      /* ── Footer ── */
-      .footer-main {
-        margin-top: auto;
-        border-top: 1px solid var(--clr-border);
-        background: var(--clr-surface);
-        padding: 1.5rem 0;
-        font-size: 0.8rem;
-        color: var(--clr-muted);
+      .quantity-btn {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        border: 1.5px solid #dee2e6;
+        background: #f8f9fa;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.15s;
+        color: #212529;
+        text-decoration: none;
       }
 
-      /* ── Misc ── */
-      .divider {
-        height: 1px;
-        background: var(--clr-border);
-        margin: 1.5rem 0;
+      .quantity-btn:hover {
+        border-color: #0d6efd;
+        background: #e7f1ff;
+        color: #0d6efd;
       }
-      .text-accent {
-        color: var(--clr-accent) !important;
+
+      .quantity-btn.danger:hover {
+        border-color: #dc3545;
+        background: #fbe9eb;
+        color: #dc3545;
       }
-      .bg-accent-lt {
-        background: var(--clr-accent-lt) !important;
+
+      .payment-option {
+        padding: 0.5rem 1rem;
+        border-radius: 999px;
+        border: 1.5px solid #dee2e6;
+        font-size: 0.875rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.15s;
+        background: white;
+        color: #6c757d;
+      }
+
+      .payment-option.active {
+        border-color: #0d6efd;
+        background: #e7f1ff;
+        color: #0d6efd;
+      }
+
+      .payment-option:hover {
+        border-color: #0d6efd;
+      }
+
+      .summary-card {
+        position: sticky;
+        top: 80px;
+      }
+
+      @media (max-width: 992px) {
+        .summary-card {
+          position: static;
+        }
       }
     </style>
 
@@ -235,11 +294,11 @@
   </head>
   <body>
     <!-- ── Navbar ── -->
-    <nav class="navbar navbar-main navbar-expand-lg sticky-top">
+    <nav class="navbar navbar-expand-lg navbar-light bg-white sticky-top border-bottom">
       <div class="container">
-        <a class="navbar-brand-text" href="{% url 'store' %}"
-          >Shop<span style="color: var(--clr-text)">Django</span></a
-        >
+        <a class="navbar-brand" href="{% url 'store' %}">
+          Shop<span>Django</span>
+        </a>
 
         <button
           class="navbar-toggler border-0"
@@ -251,10 +310,10 @@
         </button>
 
         <div class="collapse navbar-collapse" id="navMain">
-          <ul class="navbar-nav me-auto ms-3 gap-1">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-3">
             <li class="nav-item">
               <a
-                class="nav-link-custom {% block nav_store %}{% endblock %}"
+                class="nav-link {% block nav_store %}{% endblock %}"
                 href="{% url 'store' %}"
               >
                 <i class="bi bi-grid me-1"></i>Tienda
@@ -262,7 +321,7 @@
             </li>
             <li class="nav-item">
               <a
-                class="nav-link-custom {% block nav_orders %}{% endblock %}"
+                class="nav-link {% block nav_orders %}{% endblock %}"
                 href="{% url 'orders' %}"
               >
                 <i class="bi bi-receipt me-1"></i>Mis pedidos
@@ -271,48 +330,53 @@
           </ul>
 
           <div class="d-flex align-items-center gap-2">
-            <a
-              href="{% url 'cart' %}"
-              class="nav-link-custom position-relative"
-            >
+            <a href="{% url 'cart' %}" class="nav-link position-relative">
               <i class="bi bi-bag fs-5"></i>
-              <span class="cart-badge">0</span>
+              <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary cart-badge">
+                {{ cart_count|default:0 }}
+              </span>
             </a>
 
             {% if request.session.customer %}
-            <a href="{% url 'logout' %}" class="btn-nav-accent">
+            <a href="{% url 'logout' %}" class="btn btn-primary btn-sm">
               <i class="bi bi-box-arrow-right me-1"></i>Salir
             </a>
             {% else %}
-            <a href="{% url 'login' %}" class="nav-link-custom">Entrar</a>
-            <a href="{% url 'signup' %}" class="btn-nav-accent">Registrarse</a>
+            <a href="{% url 'login' %}" class="nav-link">Entrar</a>
+            <a href="{% url 'signup' %}" class="btn btn-primary btn-sm">Registrarse</a>
             {% endif %}
           </div>
         </div>
       </div>
     </nav>
 
+    <!-- ── Messages ── -->
+    <div class="container mt-3">
+      {% if messages %}
+        {% for message in messages %}
+          <div class="alert alert-{{ message.tags|default:'info' }} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+          </div>
+        {% endfor %}
+      {% endif %}
+    </div>
+
     <!-- ── Main content ── -->
     <main class="flex-grow-1">{% block content %}{% endblock %}</main>
 
     <!-- ── Footer ── -->
-    <footer class="footer-main">
-      <div
-        class="container d-flex flex-column flex-md-row justify-content-between align-items-center gap-2"
-      >
-        <span>
-          <strong
-            style="
-              font-family: &quot;Playfair Display&quot;, serif;
-              color: var(--clr-accent);
-            "
-            >ShopDjango</strong
-          >
-          &mdash; Proyecto de ejemplo
-        </span>
-        <span
-          >Hecho con <i class="bi bi-heart-fill text-danger"></i> y Django</span
-        >
+    <footer class="footer py-4">
+      <div class="container">
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-center gap-2">
+          <span>
+            <strong class="text-primary">ShopDjango</strong>
+            &mdash; Proyecto de ejemplo
+          </span>
+          <span>
+            Hecho con <i class="bi bi-heart-fill text-danger"></i> y Django
+          </span>
+        </div>
       </div>
     </footer>
 
